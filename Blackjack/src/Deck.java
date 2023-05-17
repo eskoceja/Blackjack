@@ -1,48 +1,101 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
+
+//Deck of cards
 public class Deck {
-    private ArrayList<Card> deck;
+    private ArrayList<Card> deck; //Arraylist to hold deck of cards
 
+    //empty deck of cards
     public Deck() {
-        this.deck = new ArrayList<Card>();
+        deck = new ArrayList<>();
     }
 
-    public void createFullDeck() {
-        // generate cards
+    //Create standard deck of cards
+    public Deck(boolean makeDeck) {
+        deck = new ArrayList<>();
 
+        if(makeDeck) {
+            //go through all suits
+            for(Suit suit: Suit.values()){
+                //go through all ranks
+                for(Rank rank : Rank.values()) {
+                    //add new card containing each iterations suit and rank
+                    deck.add(new Card(suit, rank));
+                }
+            }
+        }
     }
 
-    public void shuffleDeck(){
-        Collections.shuffle(deck);
+    //arraylist containing all cards
+    public ArrayList<Card> getCards() {
+        return deck;
+    }
+    //Card being added to deck
+    public void addCard(Card card) {
+        deck.add(card);
+    }
+//    public void shuffle() {
+//        ArrayList<Card> shuffled = new ArrayList<>();
+//
+//        while(deck.size() > 0) {
+//            int cardToPull = (int)(Math.random()*(deck.size()-1));
+//            shuffled.add(deck.get(cardToPull));
+//            deck.remove(cardToPull);
+//        }
+//        deck = shuffled;
+//    }
+//    short way to shuffle
+    public void shuffle() {
+        Collections.shuffle(deck, new Random());
     }
 
-
-
-    public Card getCard(int i){
-        return this.deck.get(i);
+    //card take from deck
+    public Card takeCard() {
+        Card cardToTake = new Card(deck.get(0)); //take a copy of the first card from deck
+        deck.remove(0); //remove card from deck
+        return cardToTake; //give card back
     }
 
-    public void removeCard(int i){
-        this.deck.remove(i);
+    //returns value to string
+    public String toString() {
+        String output = "";
+        for (Card card : deck) {
+            output += card;
+            output += "\n";
+        }
+        return output;
     }
 
-    public void addCard(Card addCard) {
-        this.deck.add(addCard);
+    //return true if deck still has cards left
+    public boolean hasCards() {
+        if(deck.size() > 0){
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    // Get the size of the deck
-    public int deckSize() {
-        return this.deck.size();
+    //empties out deck
+    public void emptyDeck() {
+        deck.clear();
     }
 
-    // Draws from the deck
-    public void draw(Deck comingFrom) {
-
+    public void addCards(ArrayList<Card> cards) {
+        deck.addAll(cards);
     }
 
-    // This will move cards back into the deck to continue playing
-    public void moveAllToDeck(Deck moveTo) {
+    //takes cards from discarded deck and places them in deck, shuffled; clears old deck
+    public void reloadDeckFromDiscard(Deck discard) {
+        this.addCards(discard.getCards());
+        this.shuffle();
+        discard.emptyDeck();
+        System.out.println("Ran out of cards, creating new deck from discard pile and shuffling deck.");
+    }
 
+    //return number of cards left in the deck
+    public int cardsLeft() {
+        return deck.size();
     }
 
 }

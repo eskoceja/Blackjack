@@ -1,38 +1,38 @@
 import java.util.Random;
+
+//create cards with a suit and a rank
+//contains methods needed to get value
+//contains method to Sys-out
 public class Card {
-    private Suits suit;
-    private Values value;
+    private Suit suit;
+    private Rank rank;
 
-    // create arrays for values and suits - need these to generate random cards
-    private Values[] values = Values.values();
-    private Random randomValues = new Random();
-    private Suits[] suits = Suits.values();
-    private Random randomSuits = new Random();
-
-    public Card(Suits suit, Values value) {
-        this.value = value;
-        this.suit = suit;
+    //constructor
+    public Card(Card card) {
+        this.suit = card.getSuit();
+        this.rank = card.getRank();
     }
 
-    // random card generated
-    public Card() {
-        this.suit = getRandomSuit();
-        this.value = getRandomValue();
+    //suit and rank to be created
+    public Card(Suit suit, Rank rank) {
+        this.suit = suit;
+        this.rank = rank;
+    }
+
+    //return suit of card
+    public Suit getSuit() {
+        return suit;
+    }
+
+    public Rank getRank() {
+        return rank;
+    }
+
+    public int getValue() {
+        return rank.rankValue;
     }
 
     public String toString() {
-        return this.suit.toString() + "-" + this.value.toString();
-    }
-
-    public Values getValue() {
-        return this.value;
-    }
-
-    public Values getRandomValue() {
-        return values[randomValues.nextInt(values.length)];
-    }
-
-    public Suits getRandomSuit() {
-        return suits[randomSuits.nextInt(values.length)];
+        return ("[" + rank + " of " + suit + "] (" + this.getValue() + ")");
     }
 }
